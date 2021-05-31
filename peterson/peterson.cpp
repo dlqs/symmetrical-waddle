@@ -4,19 +4,13 @@
 
 using namespace std;
 
-#define NUM_THREADS 5
+#define NUM_THREADS 2
 #define NUM_ADDS 100
 
-void *PrintHello(void *threadid) {
-  long tid;
-  tid = (long)threadid;
-  cout << "Hello World! Thread ID, " << tid << endl;
-  pthread_exit(NULL);
-}
-
+// shared resource
 int sum = 0;
 
-// begin: lock/unlock global variables
+// fill in: lock/unlock global variables
 int flag[2];
 int turn;
 // end
@@ -30,7 +24,7 @@ void lock_init() {
   turn = 0;
 }
 
-// Fill in:
+// fill in:
 void lock(int myid) {
   // Set flag[self] = 1 saying you want to acquire lock
   flag[myid] = 1;
@@ -54,17 +48,18 @@ void unlock(int myid) {
 
 void *adder(void *threadid) {
   int myid = (long)threadid;
-  for (int i = 0; i < 100; i++) {
+  for (int i = 0; i < NUM_ADDS; i++) {
     lock(myid);
     sum++;
     unlock(myid);
   }
+  return 0;
 }
 
 int main() {
   pthread_t threads[NUM_THREADS];
   int rc;
-  int i;
+  long i;
   lock_init();
 
   // Kick off threads
@@ -83,5 +78,6 @@ int main() {
   }
 
   cout << "Actual sum: " << sum << " Expected sum: " << NUM_THREADS * NUM_ADDS << endl;
-  pthread_exit(NULL);
+  //pthread_exit(NULL);
+  return 0;
 }
