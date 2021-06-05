@@ -1,2 +1,2 @@
-g++ -lpthread my_mutex.cpp my_mutex_test.cpp
+g++ -O0 -lpthread my_mutex_test.cpp
 ./a.out
