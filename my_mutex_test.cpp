@@ -11,7 +11,6 @@ void thinking(int my_id) {
   for (int i = 0; i < ROUNDS; i++) {
     mutex.lock();
     sum = sum + 1;
-    std::atomic_thread_fence(std::memory_order_seq_cst);
     mutex.unlock();
   }
 }
