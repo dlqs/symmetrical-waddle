@@ -1,29 +1,18 @@
-//#include "my_mutex.h"
-#include <atomic>
+#include "my_mutex.h"
 #include <thread>
 #include <iostream>
-#define ROUNDS 1000
-#define NUM_THREADS 100
+#define ROUNDS 10000
+#define NUM_THREADS 10000
 
 
-std::atomic<bool> locked(false);
+My_mutex mutex;
 int sum = 0;
-
-void lock() {
-  bool expected = false;
-  while (!locked.compare_exchange_strong(expected, true))
-    ;
-}
-
-void unlock() {
-  locked = false;
-}
 
 void thinking(int my_id) {
   for (int i = 0; i < ROUNDS; i++) {
-    lock();
+    mutex.lock();
     sum++;
-    unlock();
+    mutex.unlock();
   }
 }
 
