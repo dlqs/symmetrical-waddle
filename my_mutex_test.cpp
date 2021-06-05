@@ -6,12 +6,12 @@
 #define NUM_THREADS 100
 
 
-std::atomic<bool> locked;
+std::atomic<bool> locked(false);
 int sum = 0;
 
 void lock() {
   bool expected = false;
-  while (locked.compare_exchange_strong(expected, true))
+  while (!locked.compare_exchange_strong(expected, true))
     ;
 }
 
