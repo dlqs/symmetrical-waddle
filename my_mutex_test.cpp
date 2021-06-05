@@ -1,8 +1,8 @@
 #include "my_mutex.h"
 #include <thread>
 #include <iostream>
-#define ROUNDS 100
-#define NUM_THREADS 100
+#define ROUNDS 1000
+#define NUM_THREADS 1000
 
 My_mutex mutex;
 int sum = 0;
@@ -11,7 +11,7 @@ void thinking(int my_id) {
   for (int i = 0; i < ROUNDS; i++) {
     mutex.lock();
     sum = sum + 1;
-    std::atomic_thread_fence(std::memory_order_release);
+    std::atomic_thread_fence(std::memory_order_seq_cst);
     mutex.unlock();
   }
 }
